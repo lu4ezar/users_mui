@@ -1,7 +1,9 @@
+import PropTypes from "prop-types";
 import Head from "next/head";
-import styles from "./layout.module.css";
-import utilStyles from "../../styles/utils.module.css";
 import Link from "next/link";
+import { Button } from "@material-ui/core";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import styles from "./layout.module.css";
 
 export const siteTitle = "Users CRUD";
 
@@ -28,10 +30,22 @@ export default function Layout({ children, home }) {
         <div className={styles.backToHome}>
           <div>{!home}</div>
           <Link href="/">
-            <a>← Back to home</a>
+            <Button aria-label="back to home">
+              <ArrowBackIcon />
+              Back to home
+            </Button>
           </Link>
         </div>
       )}
     </div>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  home: PropTypes.bool,
+};
+
+Layout.defaultProps = {
+  home: false,
+};
