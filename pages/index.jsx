@@ -1,9 +1,8 @@
 import React from "react";
 import Head from "next/head";
 import fetch from "isomorphic-unfetch";
-import Layout, { siteTitle } from "../components/layout";
-import utilStyles from "../styles/utils.module.css";
-import Users from "../components/users";
+import Layout, { siteTitle } from "../src/components/layout";
+import Users from "../src/components/users";
 
 export default function Home({ users }) {
   return (
@@ -11,7 +10,7 @@ export default function Home({ users }) {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <section className={utilStyles.headingMd}>
+      <section>
         <Users users={users} />
       </section>
     </Layout>
