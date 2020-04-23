@@ -20,6 +20,9 @@ const useStyles = makeStyles({
   table: {
     minWidth: 600,
   },
+  row: {
+    cursor: "pointer",
+  },
   fab: {
     position: "absolute",
     top: 0,
@@ -48,12 +51,14 @@ const Users = ({ users }) => {
             </TableHead>
             <TableBody>
               {users.map((user) => (
-                <TableRow hover key={user.id}>
-                  <TableCell component="th" scope="row">
-                    {user.name}
-                  </TableCell>
-                  <TableCell align="right">{user.email}</TableCell>
-                </TableRow>
+                <Link key={user.id} href="/user/[id" as={`/user/${user.id}`}>
+                  <TableRow className={classes.row} hover>
+                    <TableCell component="th" scope="row">
+                      {user.name}
+                    </TableCell>
+                    <TableCell align="right">{user.email}</TableCell>
+                  </TableRow>
+                </Link>
               ))}
             </TableBody>
           </Table>

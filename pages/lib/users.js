@@ -9,3 +9,16 @@ export const getUsers = async () => {
   return users;
 };
 
+export const getAllUserIds = async () => {
+  const users = await getUsers();
+  return users.map(({ id }) => ({ params: { id } }));
+};
+
+export const getUser = async (id) => {
+  const users = await getUsers();
+  const user = users.find((usr) => usr.id === id);
+  return {
+    id,
+    ...user,
+  };
+};
