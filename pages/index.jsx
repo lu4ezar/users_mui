@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Layout, { siteTitle } from "../src/components/layout";
 import Users from "../src/components/users";
-import { getUsers } from "../lib/users";
+import { getUsers } from "../src/lib/users";
 
 export default function Home({ users }) {
   return (

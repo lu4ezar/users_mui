@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import Layout from "../../src/components/layout";
-import { getAllUserIds, getUser } from "../../lib/users";
+import { getAllUserIds, getUser } from "../../src/lib/users";
 
 export default function User({ userData }) {
   const { name, email } = userData;
