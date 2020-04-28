@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -77,7 +76,7 @@ const Users = () => {
           </Table>
         </TableContainer>
       )}
-      <Link href="user/add">
+      <Link href="user/addUser">
         <Fab className={classes.fab} aria-label="add user">
           <AddIcon />
         </Fab>
