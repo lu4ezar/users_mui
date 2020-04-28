@@ -10,8 +10,11 @@ import {
   TableRow,
   Paper,
   Fab,
+  CircularProgress,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import { useQuery } from "@apollo/react-hooks";
+import { GET_USERS } from "../apollo";
 
 const useStyles = makeStyles({
   root: {
@@ -30,8 +33,18 @@ const useStyles = makeStyles({
   },
 });
 
-const Users = ({ users }) => {
+const Users = () => {
+  const { loading, error, data } = useQuery(GET_USERS);
+  const { users } = data || {};
   const classes = useStyles();
+  if (loading) return <CircularProgress />;
+  if (error)
+    return (
+      <div>
+        Error:
+        {error.message}
+      </div>
+    );
   return (
     <div className={classes.root}>
       <h1>Users</h1>
@@ -50,13 +63,13 @@ const Users = ({ users }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
-                <Link key={user.id} href="/user/[id" as={`/user/${user.id}`}>
+              {users.map(({ _id: id, name, email }) => (
+                <Link key={id} href="/user/[id]" as={`/user/${id}`}>
                   <TableRow className={classes.row} hover>
                     <TableCell component="th" scope="row">
-                      {user.name}
+                      {name}
                     </TableCell>
-                    <TableCell align="right">{user.email}</TableCell>
+                    <TableCell align="right">{email}</TableCell>
                   </TableRow>
                 </Link>
               ))}
@@ -71,20 +84,6 @@ const Users = ({ users }) => {
       </Link>
     </div>
   );
-};
-
-Users.propTypes = {
-  users: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      email: PropTypes.string,
-      name: PropTypes.string,
-    })
-  ),
-};
-
-Users.defaultProps = {
-  users: [],
 };
 
 export default Users;

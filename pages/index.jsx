@@ -2,16 +2,15 @@ import React from "react";
 import Head from "next/head";
 import Layout, { siteTitle } from "../src/components/layout";
 import Users from "../src/components/users";
-import { getUsers } from "../src/lib/users";
 
-export default function Home({ users }) {
+export default function Home() {
   return (
     <Layout home>
       <Head>
         <title>{siteTitle}</title>
       </Head>
       <section>
-        <Users users={users} />
+        <Users />
       </section>
     </Layout>
   );
@@ -20,12 +19,3 @@ export default function Home({ users }) {
 Home.propTypes = {
   ...React.Children.propTypes,
 };
-
-export async function getServerSideProps() {
-  const users = await getUsers();
-  return {
-    props: {
-      users,
-    },
-  };
-}
