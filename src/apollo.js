@@ -42,7 +42,7 @@ export const DELETE_USER = gql`
 
 export const ENDPOINT =
   process.env.NODE_ENV === "production"
-    ? "https://github-search-graphql.herokuapp.com/"
+    ? "https://users-mui.now.sh/"
     : "http://192.168.0.125:4000";
 
 const client = new ApolloClient({
