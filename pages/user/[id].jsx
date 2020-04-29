@@ -1,38 +1,26 @@
-import PropTypes from "prop-types";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/react-hooks";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import Layout from "../../src/components/layout";
-import { getAllUserIds, getUser } from "../../src/lib/users";
+import { GET_USER } from "../../src/apollo";
 
-export default function User({ userData }) {
-  const { name, email } = userData;
+export default function User() {
+  const router = useRouter();
+  const { id } = router.query;
+  const { name, email } = useQuery(GET_USER, {
+    variables: { id },
+  }).data.user;
+
   return (
     <Layout>
-      <div>{name}</div>
-      <div>{email}</div>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography color="textSecondary">{email}</Typography>
+        </CardContent>
+      </Card>
     </Layout>
   );
-}
-
-User.propTypes = {
-  userData: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
-export async function getStaticPaths() {
-  const paths = await getAllUserIds();
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const userData = await getUser(params.id);
-  return {
-    props: {
-      userData,
-    },
-  };
 }
