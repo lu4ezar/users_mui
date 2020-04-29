@@ -7,9 +7,10 @@ import { GET_USER } from "../../src/apollo";
 export default function User() {
   const router = useRouter();
   const { id } = router.query;
-  const { name, email } = useQuery(GET_USER, {
-    variables: { id },
-  }).data.user;
+  const { name, email } =
+    useQuery(GET_USER, {
+      variables: { id },
+    })?.data?.user || {};
 
   return (
     <Layout>
