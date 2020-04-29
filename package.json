@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"nodemon server/src/index.js\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
@@ -14,9 +14,12 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "^4.9.10",
     "apollo-boost": "^0.4.7",
-    "concurrently": "^5.2.0",
+    "apollo-datasource": "^0.7.0",
+    "apollo-server": "^2.12.0",
     "graphql": "^15.0.0",
     "isomorphic-unfetch": "^3.0.0",
+    "mongodb": "^3.5.6",
+    "mongoose": "^5.9.10",
     "next": "9.3.5",
     "prop-types": "^15.7.2",
     "react": "16.13.1",

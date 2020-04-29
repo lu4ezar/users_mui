@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 const { ApolloServer } = require("apollo-server");
-const resolvers = require("./resolvers");
-const Users = require("./datasource");
-const schema = require("./schema");
-const User = require("./model");
+const resolvers = require("../../server/resolvers");
+const Users = require("../../server/datasource");
+const schema = require("../../server/schema");
+const User = require("../../server/model");
 
 const typeDefs = schema;
 
-require("./db");
+require("../../server/db");
 
 const server = new ApolloServer({
   typeDefs,
