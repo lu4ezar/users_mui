@@ -1,8 +1,15 @@
 /* eslint-disable no-console */
 const mongoose = require("mongoose");
+const config = require("./config.json");
+
+const environment = process.env.NODE_ENV || "development";
+const environmentConfig = config[environment];
+const { url, port, database } = environmentConfig;
+const dbPath =
+  process.env.PROD_MONGODB || `mongodb://${url}:${port}/${database}`;
 
 mongoose
-  .connect("mongodb://localhost:27017/users", {
+  .connect(dbPath, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
