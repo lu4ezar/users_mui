@@ -10,10 +10,11 @@ import {
   Paper,
   Fab,
   CircularProgress,
+  IconButton,
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import { useQuery } from "@apollo/react-hooks";
-import { GET_USERS } from "../apollo";
+import { Add as AddIcon, Close as CloseIcon } from "@material-ui/icons";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { GET_USERS, DELETE_USER } from "../apollo";
 
 const useStyles = makeStyles({
   root: {
@@ -33,17 +34,46 @@ const useStyles = makeStyles({
 });
 
 const Users = () => {
+  const classes = useStyles();
   const { loading, error, data } = useQuery(GET_USERS);
   const { users } = data || {};
-  const classes = useStyles();
-  if (loading) return <CircularProgress />;
-  if (error)
+  const [deleteUser] = useMutation(DELETE_USER, {
+    update(
+      cache,
+      {
+        data: {
+          deleteUser: { _id: deletedUserId },
+        },
+      }
+    ) {
+      const { users: cachedUsers } = cache.readQuery({ query: GET_USERS });
+      cache.writeQuery({
+        query: GET_USERS,
+        data: {
+          users: cachedUsers.filter(({ _id: id }) => id !== deletedUserId),
+        },
+      });
+    },
+  });
+
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
+    deleteUser({
+      variables: {
+        id,
+      },
+    });
+  };
+
+  if (error) {
     return (
       <div>
         Error:
         {error.message}
       </div>
     );
+  }
+
   return (
     <div className={classes.root}>
       <h1>Users</h1>
@@ -60,6 +90,7 @@ const Users = () => {
               <TableRow>
                 <TableCell align="center">Name</TableCell>
                 <TableCell align="right">Email</TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -70,6 +101,15 @@ const Users = () => {
                       {name}
                     </TableCell>
                     <TableCell align="right">{email}</TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        aria-label="delete"
+                        onClick={(e) => handleDelete(e, id)}
+                        title="delete user"
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 </Link>
               ))}

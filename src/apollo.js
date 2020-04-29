@@ -30,6 +30,16 @@ export const CREATE_USER = gql`
   }
 `;
 
+export const DELETE_USER = gql`
+  mutation DeleteUser($id: ID!) {
+    deleteUser(id: $id) {
+      _id
+      email
+      name
+    }
+  }
+`;
+
 export const ENDPOINT =
   process.env.NODE_ENV === "production"
     ? "https://github-search-graphql.herokuapp.com/"
