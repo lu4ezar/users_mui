@@ -11,7 +11,10 @@ require("../../server/db");
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers: {},
+  cors: {
+    origin: "*",
+  },
   dataSources: () => ({
     users: new Users(User),
   }),
