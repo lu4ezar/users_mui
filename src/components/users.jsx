@@ -47,6 +47,7 @@ const Users = () => {
   return (
     <div className={classes.root}>
       <h1>Users</h1>
+      {loading && <CircularProgress />}
       {!users ? null : (
         <TableContainer component={Paper}>
           <Table
