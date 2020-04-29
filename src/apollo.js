@@ -47,6 +47,9 @@ export const ENDPOINT =
 
 const client = new ApolloClient({
   uri: ENDPOINT,
+  cors: {
+    origin: "*",
+  },
   fetch,
 });
 
