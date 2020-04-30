@@ -1,25 +1,26 @@
 /* eslint-disable no-console */
-const { ApolloServer } = require("apollo-server");
-const resolvers = require("../../server/resolvers");
-const Users = require("../../server/datasource");
-const schema = require("../../server/schema");
-const User = require("../../server/model");
+import { ApolloServer } from "apollo-server-micro";
+import resolvers from "../../server/resolvers";
+import UsersAPI from "../../server/datasource";
+import typeDefs from "../../server/schema";
+import User from "../../server/model";
+import db from "../../server/db";
 
-const typeDefs = schema;
-
-require("../../server/db");
-
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   typeDefs,
-  resolvers: {},
-  cors: {
-    origin: "*",
-  },
+  resolvers,
+  context: () => db,
   dataSources: () => ({
-    users: new Users(User),
+    users: new UsersAPI(User),
   }),
 });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀Server ready at ${url}`);
-});
+const handler = apolloServer.createHandler({ path: "/api/graphql" });
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+export default handler;
