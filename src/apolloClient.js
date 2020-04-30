@@ -43,7 +43,7 @@ export const DELETE_USER = gql`
 export const ENDPOINT =
   process.env.NODE_ENV === "production"
     ? "https://users-mui.now.sh/api/graphql"
-    : "http://192.168.0.125:4000";
+    : "http://localhost:3000/api/graphql";
 
 const client = new ApolloClient({
   uri: ENDPOINT,

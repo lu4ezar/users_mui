@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@apollo/react-hooks";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import Layout from "../../src/components/layout";
-import { GET_USER } from "../../src/apollo";
+import { GET_USER } from "../../src/apolloClient";
 
 export default function User() {
   const router = useRouter();

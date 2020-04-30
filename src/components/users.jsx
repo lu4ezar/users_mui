@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { Add as AddIcon, Close as CloseIcon } from "@material-ui/icons";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { GET_USERS, DELETE_USER } from "../apollo";
+import { GET_USERS, DELETE_USER } from "../apolloClient";
 
 const useStyles = makeStyles({
   root: {
