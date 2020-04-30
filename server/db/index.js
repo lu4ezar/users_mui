@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-const mongoose = require("mongoose");
-const config = require("./config.json");
+import mongoose from "mongoose";
+import config from "./config";
 
 const environment = process.env.NODE_ENV || "development";
 const environmentConfig = config[environment];
@@ -21,8 +21,6 @@ mongoose
 
 const db = mongoose.connection;
 
-exports.db = db;
-
 db.once("open", () => {
   console.log(`db connected.`);
 })
@@ -35,3 +33,5 @@ db.once("open", () => {
 process.on("SIGINT", () => {
   console.log("app terminated");
 });
+
+export default db;

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   Query: {
     users: (_, __, { dataSources }) => dataSources.users.getAllUsers(),
     user: (_, { id }, { dataSources }) => dataSources.users.getUser(id),

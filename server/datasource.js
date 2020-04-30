@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-const { DataSource } = require("apollo-datasource");
-const ObjectId = require("mongodb").ObjectID;
-const User = require("./model");
+import { DataSource } from "apollo-datasource";
+import { ObjectId } from "mongodb";
+import User from "./model";
 
 class UsersAPI extends DataSource {
   constructor(collection) {
@@ -36,4 +36,4 @@ class UsersAPI extends DataSource {
   }
 }
 
-module.exports = UsersAPI;
+export default UsersAPI;
