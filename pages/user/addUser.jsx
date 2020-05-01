@@ -58,9 +58,14 @@ export default function AddUser() {
         <CircularProgress />
       ) : (
         <form className={classes.root} display="flex" onSubmit={handleSubmit}>
-          <TextField label="name" onChange={(e) => setName(e.target.value)} />
+          <TextField
+            label="name"
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
           <TextField
             label="email"
+            required
             type="email"
             onChange={(e) => setEmail(e.target.value)}
           />
