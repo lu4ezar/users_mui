@@ -8,16 +8,20 @@ const { url, port, database } = environmentConfig;
 const dbPath =
   process.env.PROD_MONGODB || `mongodb://${url}:${port}/${database}`;
 
-mongoose
-  .connect(dbPath, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .catch((err) => {
-    console.error(
-      `mongoose connect error: ${err.message}, mongodb is unavailable`
-    );
-  });
+if (!mongoose.connection.readyState) {
+  mongoose
+    .connect(dbPath, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .catch((err) => {
+      console.error(
+        `mongoose connect error: ${err.message}, mongodb is unavailable`
+      );
+    });
+} else {
+  console.log("db is ok");
+}
 
 const db = mongoose.connection;
 
