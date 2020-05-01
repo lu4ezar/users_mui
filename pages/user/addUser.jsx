@@ -59,7 +59,11 @@ export default function AddUser() {
       ) : (
         <form className={classes.root} display="flex" onSubmit={handleSubmit}>
           <TextField label="name" onChange={(e) => setName(e.target.value)} />
-          <TextField label="email" onChange={(e) => setEmail(e.target.value)} />
+          <TextField
+            label="email"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <Button color="primary" type="submit" onClick={handleSubmit}>
             Submit
           </Button>
