@@ -4,13 +4,19 @@ import { Card, CardContent, Typography } from "@material-ui/core";
 import Layout from "../../src/components/layout";
 import { GET_USER } from "../../src/apolloClient";
 
+/*
+initial render results in failed graphql query:
+https://nextjs.org/docs/routing/dynamic-routes#caveats
+https://github.com/zeit/next.js/discussions/11484
+*/
+
 export default function User() {
   const router = useRouter();
   const { id } = router.query;
   const { name, email } =
     useQuery(GET_USER, {
       variables: { id },
-    })?.data?.user || {};
+    }).data?.user || {};
 
   return (
     <Layout>
