@@ -4,12 +4,13 @@ import Link from "next/link";
 import { Button, Container } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
-export const siteTitle = "Users CRUD";
+const siteTitle = "Users CRUD";
 
 export default function Layout({ children, home }) {
   return (
     <Container maxWidth="md">
       <Head>
+        <title>{siteTitle}</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="NextJS GraphQL CRUD app" />
         <meta
