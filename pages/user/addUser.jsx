@@ -1,4 +1,12 @@
-import { TextField, Button, CircularProgress } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  CircularProgress,
+  InputAdornment,
+  Typography,
+  Paper,
+} from "@material-ui/core";
+import { AccountCircle, Email } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMutation } from "@apollo/react-hooks";
 import { useState } from "react";
@@ -8,13 +16,20 @@ import { CREATE_USER, GET_USERS } from "../../src/apolloClient";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    alignItems: "center",
     "& > *": {
       margin: theme.spacing(1),
       width: "25ch",
     },
   },
-  input: {
-    display: "none",
+  wrapper: { position: "relative", marginLeft: "auto" },
+  integratedProgress: {
+    position: "absolute",
+    top: "50%",
+    left: " 50%",
+    marginTop: -12,
+    marginLeft: -12,
   },
 }));
 
@@ -47,33 +62,63 @@ export default function AddUser() {
 
   return (
     <Layout>
-      <h1>Add new user</h1>
-      {error && (
-        <div>
-          Error!
-          {error.message}
-        </div>
-      )}
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <form className={classes.root} display="flex" onSubmit={handleSubmit}>
+      <Typography color="textPrimary" variant="h3" gutterBottom>
+        Add new user
+      </Typography>
+      <Paper>
+        {error && (
+          <Typography color="error">
+            Error:
+            {error.message}
+          </Typography>
+        )}
+        <form className={classes.root} onSubmit={handleSubmit}>
           <TextField
             label="name"
+            value={name}
             required
             onChange={(e) => setName(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             label="email"
+            value={email}
             required
-            type="email"
             onChange={(e) => setEmail(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Email />
+                </InputAdornment>
+              ),
+            }}
           />
-          <Button color="primary" type="submit" onClick={handleSubmit}>
-            Submit
-          </Button>
+          <div className={classes.wrapper}>
+            <Button
+              fullWidth
+              color="primary"
+              variant="contained"
+              type="submit"
+              onClick={handleSubmit}
+              disabled={!name || !email || loading}
+            >
+              Submit
+            </Button>
+            {loading && (
+              <CircularProgress
+                size={24}
+                className={classes.integratedProgress}
+              />
+            )}
+          </div>
         </form>
-      )}
+      </Paper>
     </Layout>
   );
 }
