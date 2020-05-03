@@ -20,6 +20,9 @@ export default function User() {
 
   return (
     <Layout>
+      <Typography color="textPrimary" variant="h3" gutterBottom>
+        User Info
+      </Typography>
       <Card>
         <CardContent>
           <Typography variant="h5" component="h2">
