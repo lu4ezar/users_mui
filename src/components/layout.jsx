@@ -24,15 +24,16 @@ export default function Layout({ children, home }) {
       </Head>
       <main>{children}</main>
       {!home && (
-        <div>
-          <div>{!home}</div>
-          <Link href="/">
-            <Button aria-label="back to home">
-              <ArrowBackIcon />
-              Back to home
-            </Button>
-          </Link>
-        </div>
+        <Link href="/">
+          <Button
+            aria-label="back to home"
+            variant="contained"
+            style={{ margin: "1rem", marginRight: "auto" }}
+          >
+            <ArrowBackIcon />
+            Back to home
+          </Button>
+        </Link>
       )}
     </Container>
   );
