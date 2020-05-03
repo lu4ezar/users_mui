@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+import { useState } from "react";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -10,26 +12,26 @@ import {
   Paper,
   Fab,
   CircularProgress,
-  IconButton,
+  Tooltip,
+  Typography,
 } from "@material-ui/core";
-import { Add as AddIcon, Close as CloseIcon } from "@material-ui/icons";
+import { Add as AddIcon } from "@material-ui/icons";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { GET_USERS, DELETE_USER } from "../apolloClient";
+import { GET_USERS, DELETE_USER, UPDATE_USER } from "../apolloClient";
+import UsersTableRow from "./usersTableRow";
+import UsersTableRowEdit from "./usersTableRowEdit";
 
 const useStyles = makeStyles({
   root: {
-    position: "relative",
+    display: "flex",
+    flexDirection: "column",
   },
   table: {
     minWidth: 600,
   },
-  row: {
-    cursor: "pointer",
-  },
   fab: {
-    position: "absolute",
-    top: 0,
-    right: 0,
+    alignSelf: "flex-end",
+    margin: "1rem",
   },
 });
 
@@ -37,6 +39,9 @@ const Users = () => {
   const classes = useStyles();
   const { loading, error, data } = useQuery(GET_USERS);
   const { users } = data || {};
+
+  const [editId, setEditId] = useState(null);
+
   const [deleteUser] = useMutation(DELETE_USER, {
     update(
       cache,
@@ -56,6 +61,23 @@ const Users = () => {
     },
   });
 
+  const [updateUser] = useMutation(UPDATE_USER, {
+    update(cache, { data: { updateUser: updatedUser } }) {
+      const { users: cachedUsers } = cache.readQuery({ query: GET_USERS });
+      cache.writeQuery({
+        query: GET_USERS,
+        data: {
+          users: cachedUsers.map((user) =>
+            updatedUser._id === user._id ? updatedUser : user
+          ),
+        },
+      });
+    },
+    onCompleted() {
+      setEditId(null);
+    },
+  });
+
   const handleDelete = (e, id) => {
     e.stopPropagation();
     deleteUser({
@@ -65,18 +87,22 @@ const Users = () => {
     });
   };
 
-  if (error) {
-    return (
-      <div>
-        Error:
-        {error.message}
-      </div>
-    );
-  }
+  const handleSetEdit = (e, id) => {
+    e.stopPropagation();
+    setEditId(id);
+  };
 
   return (
     <div className={classes.root}>
-      <h1>Users</h1>
+      <Typography color="textPrimary" variant="h3" gutterBottom>
+        Users
+      </Typography>
+      {error && (
+        <Typography color="error">
+          Error:
+          {error.message}
+        </Typography>
+      )}
       {loading && <CircularProgress />}
       {!users ? null : (
         <TableContainer component={Paper}>
@@ -94,33 +120,35 @@ const Users = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map(({ _id: id, name, email }) => (
-                <Link key={id} href="/user/[id]" as={`/user/${id}`}>
-                  <TableRow className={classes.row} hover>
-                    <TableCell component="th" scope="row">
-                      {name}
-                    </TableCell>
-                    <TableCell align="right">{email}</TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        aria-label="delete"
-                        onClick={(e) => handleDelete(e, id)}
-                        title="delete user"
-                      >
-                        <CloseIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                </Link>
-              ))}
+              {users.map((user) => {
+                const userId = user._id;
+                const isEditing = userId === editId;
+                return isEditing ? (
+                  <UsersTableRowEdit
+                    key={userId}
+                    user={user}
+                    dropEditingId={() => setEditId(null)}
+                    updateUser={updateUser}
+                  />
+                ) : (
+                  <UsersTableRow
+                    key={userId}
+                    user={user}
+                    setEditId={(e) => handleSetEdit(e, userId)}
+                    handleDelete={(e) => handleDelete(e, userId)}
+                  />
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
       )}
       <Link href="user/addUser">
-        <Fab className={classes.fab} aria-label="add user">
-          <AddIcon />
-        </Fab>
+        <Tooltip title="add user">
+          <Fab className={classes.fab} aria-label="add user" color="primary">
+            <AddIcon />
+          </Fab>
+        </Tooltip>
       </Link>
     </div>
   );
