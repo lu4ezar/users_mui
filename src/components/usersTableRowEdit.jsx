@@ -21,7 +21,8 @@ const UsersTableRow = ({ user, dropEditingId, updateUser }) => {
   const { _id: id } = user;
   const [name, setName] = useState(user.name || "");
   const [email, setEmail] = useState(user.email || "");
-  const handleSubmit = () =>
+  const handleSubmit = (e) => {
+    e.preventDefault();
     updateUser({
       variables: {
         id,
@@ -31,6 +32,7 @@ const UsersTableRow = ({ user, dropEditingId, updateUser }) => {
         },
       },
     });
+  };
   return (
     <TableRow className={classes.row} hover>
       <TableCell scope="row">

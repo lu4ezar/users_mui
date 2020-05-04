@@ -9,7 +9,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Fab,
   CircularProgress,
   Tooltip,
@@ -105,7 +104,7 @@ const Users = () => {
       )}
       {loading && <CircularProgress />}
       {!users ? null : (
-        <TableContainer component={Paper}>
+        <TableContainer component="form">
           <Table
             stickyHeader
             className={classes.table}
