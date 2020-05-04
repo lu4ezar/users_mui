@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { ApolloServer } from "apollo-server-micro";
-import resolvers from "../../server/resolvers";
-import UsersAPI from "../../server/datasource";
-import typeDefs from "../../server/schema";
-import User from "../../server/model";
-import db from "../../server/db";
+import resolvers from "./resolvers";
+import UsersAPI from "./datasource";
+import typeDefs from "./schema";
+import User from "./model";
+import db from "./db";
 
 const apolloServer = new ApolloServer({
   typeDefs,
