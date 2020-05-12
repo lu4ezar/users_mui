@@ -1,5 +1,4 @@
 import ApolloClient, { gql } from "apollo-boost";
-import fetch from "isomorphic-unfetch";
 
 export const GET_USER = gql`
   query User($id: ID!) {
@@ -57,7 +56,6 @@ export const ENDPOINT =
 
 const client = new ApolloClient({
   uri: ENDPOINT,
-  fetch,
 });
 
 export default client;
