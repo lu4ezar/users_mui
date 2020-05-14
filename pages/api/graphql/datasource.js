@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { DataSource } from "apollo-datasource";
 import { ObjectId } from "mongodb";
 import User from "./model";
