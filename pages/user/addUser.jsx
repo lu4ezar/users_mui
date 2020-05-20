@@ -75,6 +75,7 @@ export default function AddUser() {
         <form className={classes.root} onSubmit={handleSubmit}>
           <TextField
             label="name"
+            name="name"
             value={name}
             required
             onChange={(e) => setName(e.target.value)}
@@ -88,6 +89,7 @@ export default function AddUser() {
           />
           <TextField
             label="email"
+            name="email"
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
