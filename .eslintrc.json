@@ -21,6 +21,9 @@
   "rules": {
     "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
-    "no-underscore-dangle": ["error", { "allow": ["_id", "__typename"] }]
+    "no-underscore-dangle": [
+      "error",
+      { "allow": ["_id", "__typename", "__APOLLO_STATE__"] }
+    ]
   }
 }
