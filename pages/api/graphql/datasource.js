@@ -12,8 +12,14 @@ class UsersAPI extends DataSource {
     return this.collection.findOne({ _id: ObjectId(userId) });
   }
 
-  getAllUsers() {
-    return this.collection.find();
+  async getUsers(skip = 0, limit = 5) {
+    const users = await this.collection.find().skip(skip).limit(limit).exec();
+    const totalUsers = await this.collection.countDocuments();
+    const hasNext = users.length + skip < totalUsers;
+    return {
+      users,
+      hasNext,
+    };
   }
 
   createUser(name, email) {
@@ -22,16 +28,15 @@ class UsersAPI extends DataSource {
   }
 
   async updateUser(id, name, email) {
-    this.user = await this.getUser(id);
-    this.user.name = name;
-    this.user.email = email;
-    return this.user.save();
+    const user = await this.collection.findOne({ _id: id });
+    user.name = name;
+    user.email = email;
+    return user.save();
   }
 
   async deleteUser(id) {
-    const user = await this.collection.findOne({ _id: ObjectId(id) });
     await this.collection.deleteOne({ _id: ObjectId(id) });
-    return user;
+    return id;
   }
 }
 
