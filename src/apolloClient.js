@@ -54,6 +54,11 @@ export const ENDPOINT =
     ? "https://users-mui.now.sh/api/graphql"
     : "http://localhost:3000/api/graphql";
 
+const cache =
+  typeof window === "undefined"
+    ? new InMemoryCache()
+    : new InMemoryCache().restore(window.__APOLLO_STATE__);
+
 const client = new ApolloClient({
   uri: ENDPOINT,
 });
