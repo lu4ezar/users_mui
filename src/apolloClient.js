@@ -1,4 +1,10 @@
-import ApolloClient, { gql } from "apollo-boost";
+/* eslint-disable no-console */
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
+import { onError } from "apollo-link-error";
+import { ApolloLink } from "apollo-link";
+import gql from "graphql-tag";
 
 export const GET_USER = gql`
   query User($id: ID!) {
@@ -60,7 +66,23 @@ const cache =
     : new InMemoryCache().restore(window.__APOLLO_STATE__);
 
 const client = new ApolloClient({
-  uri: ENDPOINT,
+  ssrMode: true,
+  link: ApolloLink.from([
+    onError(({ graphQLErrors, networkError }) => {
+      if (graphQLErrors)
+        graphQLErrors.forEach(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        );
+      if (networkError) console.log(`[Network error]: ${networkError}`);
+    }),
+    new HttpLink({
+      uri: ENDPOINT,
+      credentials: "same-origin",
+    }),
+  ]),
+  cache,
 });
 
 export default client;
