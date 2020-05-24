@@ -16,11 +16,14 @@ export const GET_USER = gql`
 `;
 
 export const GET_USERS = gql`
-  query Users {
-    users {
-      _id
-      name
-      email
+  query Users($skip: Int = 0, $limit: Int = 5) {
+    usersQuery(skip: $skip, limit: $limit) {
+      users {
+        _id
+        name
+        email
+      }
+      hasNext
     }
   }
 `;
