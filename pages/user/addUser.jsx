@@ -43,11 +43,20 @@ export default function AddUser() {
       name,
       email,
     },
-    update(cache, { data: { createUser: createUserResult } }) {
-      const { users } = cache.readQuery({ query: GET_USERS });
+    update(cache, { data: { createUser: newUser } }) {
+      const cachedQuery = cache.readQuery({
+        query: GET_USERS,
+      });
+      const { users: cachedUsers } = cachedQuery.usersQuery;
+      const users = [newUser, ...cachedUsers];
       cache.writeQuery({
         query: GET_USERS,
-        data: { users: users.concat([createUserResult]) },
+        data: {
+          usersQuery: {
+            ...cachedQuery.usersQuery,
+            users,
+          },
+        },
       });
     },
     onCompleted: () => {
