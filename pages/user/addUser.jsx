@@ -48,7 +48,7 @@ export default function AddUser() {
         query: GET_USERS,
       });
       const { users: cachedUsers } = cachedQuery.usersQuery;
-      const users = [newUser, ...cachedUsers];
+      const users = [...cachedUsers, newUser];
       cache.writeQuery({
         query: GET_USERS,
         data: {
