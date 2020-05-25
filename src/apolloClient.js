@@ -55,9 +55,9 @@ export const DELETE_USER = gql`
 `;
 
 export const ENDPOINT =
-  process.env.NODE_ENV === "production"
-    ? "https://users-mui.now.sh/api/graphql"
-    : "http://localhost:3000/api/graphql";
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000/api/graphql"
+    : "https://users-mui.now.sh/api/graphql";
 
 const cache =
   typeof window === "undefined"
