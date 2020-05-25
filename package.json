@@ -24,6 +24,8 @@
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "graphql-tools": "^6.0.0",
+    "micro": "^9.3.4",
+    "micro-cors": "^0.1.1",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.13",
     "next": "^9.4.2",

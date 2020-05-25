@@ -6,8 +6,9 @@ import typeDefs from "./schema";
 import User from "./model";
 import db from "./db";
 
+const cors = require("micro-cors")();
+
 const apolloServer = new ApolloServer({
-  cors: false,
   typeDefs,
   resolvers,
   context: () => db,
@@ -24,4 +25,6 @@ export const config = {
   },
 };
 
-export default handler;
+export default cors((req, res) =>
+  req.method === "OPTIONS" ? res.end() : handler(req, res)
+);
