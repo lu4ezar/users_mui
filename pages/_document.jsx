@@ -33,22 +33,27 @@ export default class Document extends NextDocument {
 }
 
 Document.getInitialProps = async (ctx) => {
-  const sheets = new ServerStyleSheets();
-  const originalRenderPage = ctx.renderPage;
-  ctx.renderPage = () =>
-    originalRenderPage({
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-    });
+  try {
+    const sheets = new ServerStyleSheets();
+    const originalRenderPage = ctx.renderPage;
+    ctx.renderPage = () =>
+      originalRenderPage({
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+      });
 
-  const initialProps = await NextDocument.getInitialProps(ctx);
-  await client.query({ query: GET_USERS });
+    const initialProps = await NextDocument.getInitialProps(ctx);
+    await client.query({ query: GET_USERS });
 
-  return {
-    ...initialProps,
-    styles: [
-      ...React.Children.toArray(initialProps.styles),
-      sheets.getStyleElement(),
-    ],
-  };
+    return {
+      ...initialProps,
+      styles: [
+        ...React.Children.toArray(initialProps.styles),
+        sheets.getStyleElement(),
+      ],
+    };
+  } catch (err) {
+    console.error(err.message);
+    return err;
+  }
 };
