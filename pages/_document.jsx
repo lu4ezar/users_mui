@@ -53,7 +53,7 @@ Document.getInitialProps = async (ctx) => {
       ],
     };
   } catch (err) {
-    console.error(err.message);
+    console.error(`There's error: ${err.message}`);
     return err;
   }
 };
