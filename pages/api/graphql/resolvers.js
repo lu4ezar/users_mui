@@ -1,6 +1,7 @@
 export default {
   Query: {
-    users: (_, __, { dataSources }) => dataSources.users.getAllUsers(),
+    usersQuery: (_, { skip, limit }, { dataSources }) =>
+      dataSources.users.getUsers(skip, limit),
     user: (_, { id }, { dataSources }) => dataSources.users.getUser(id),
   },
   Mutation: {

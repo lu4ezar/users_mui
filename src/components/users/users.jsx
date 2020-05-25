@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Table,
   TableBody,
@@ -12,69 +11,31 @@ import {
   CircularProgress,
   Tooltip,
   Typography,
+  Button,
 } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { GET_USERS, DELETE_USER, UPDATE_USER } from "../apolloClient";
-import UsersTableRow from "./usersTableRow";
-import UsersTableRowEdit from "./usersTableRowEdit";
-
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  table: {
-    minWidth: 600,
-  },
-  fab: {
-    alignSelf: "flex-end",
-    margin: "1rem",
-  },
-});
+import UsersTableRow from "../usersTableRow";
+import UsersTableRowEdit from "../usersTableRowEdit";
+import useStyles from "./useStyles";
+import { useUpdateMutation, useDeleteMutation, useFetch } from "./usersHooks";
 
 const Users = () => {
   const classes = useStyles();
-  const { loading, error, data } = useQuery(GET_USERS);
-  const { users } = data || {};
 
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const deleteUser = useDeleteMutation();
+  const updateUser = useUpdateMutation();
+  const {
+    fetchMore,
+    data: { usersQuery: { users = [], hasNext = true } = {} } = {},
+    loading,
+    error,
+  } = useFetch();
   const [editId, setEditId] = useState(null);
-
-  const [deleteUser] = useMutation(DELETE_USER, {
-    update(
-      cache,
-      {
-        data: {
-          deleteUser: { _id: deletedUserId },
-        },
-      }
-    ) {
-      const { users: cachedUsers } = cache.readQuery({ query: GET_USERS });
-      cache.writeQuery({
-        query: GET_USERS,
-        data: {
-          users: cachedUsers.filter(({ _id: id }) => id !== deletedUserId),
-        },
-      });
-    },
-  });
-
-  const [updateUser] = useMutation(UPDATE_USER, {
-    update(cache, { data: { updateUser: updatedUser } }) {
-      const { users: cachedUsers } = cache.readQuery({ query: GET_USERS });
-      cache.writeQuery({
-        query: GET_USERS,
-        data: {
-          users: cachedUsers.map((user) =>
-            updatedUser._id === user._id ? updatedUser : user
-          ),
-        },
-      });
-    },
-    onCompleted() {
-      setEditId(null);
-    },
-  });
 
   const handleDelete = (e, id) => {
     e.stopPropagation();
@@ -89,6 +50,10 @@ const Users = () => {
     e.stopPropagation();
     setEditId(id);
   };
+
+  if (!hasMounted) {
+    return null;
+  }
 
   return (
     <div className={classes.root}>
@@ -141,13 +106,18 @@ const Users = () => {
           </Table>
         </TableContainer>
       )}
-      <Link href="user/addUser">
-        <Tooltip title="add user">
-          <Fab className={classes.fab} aria-label="add user" color="primary">
-            <AddIcon />
-          </Fab>
-        </Tooltip>
-      </Link>
+      <div className={classes.btn__container}>
+        <Button variant="contained" disabled={!hasNext} onClick={fetchMore}>
+          More
+        </Button>
+        <Link href="user/addUser">
+          <Tooltip title="add user">
+            <Fab aria-label="add user" color="primary">
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        </Link>
+      </div>
     </div>
   );
 };

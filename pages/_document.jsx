@@ -2,6 +2,7 @@ import React from "react";
 import NextDocument, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/styles";
 import theme from "../styles/theme";
+import client, { GET_USERS } from "../src/apolloClient";
 
 export default class Document extends NextDocument {
   render() {
@@ -12,6 +13,14 @@ export default class Document extends NextDocument {
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+          <script
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: `window.__APOLLO_STATE__ = ${JSON.stringify(
+                client.extract()
+              )};`,
+            }}
           />
         </Head>
         <body>
@@ -24,6 +33,11 @@ export default class Document extends NextDocument {
 }
 
 Document.getInitialProps = async (ctx) => {
+  try {
+    await client.query({ query: GET_USERS });
+  } catch (err) {
+    console.error(`Apollo call error: ${err.message}`);
+  }
   const sheets = new ServerStyleSheets();
   const originalRenderPage = ctx.renderPage;
   ctx.renderPage = () =>

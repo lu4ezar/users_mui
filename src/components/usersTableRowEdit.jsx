@@ -21,9 +21,9 @@ const UsersTableRow = ({ user, dropEditingId, updateUser }) => {
   const { _id: id } = user;
   const [name, setName] = useState(user.name || "");
   const [email, setEmail] = useState(user.email || "");
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateUser({
+    await updateUser({
       variables: {
         id,
         input: {
@@ -32,6 +32,7 @@ const UsersTableRow = ({ user, dropEditingId, updateUser }) => {
         },
       },
     });
+    dropEditingId();
   };
   return (
     <TableRow className={classes.row} hover>
