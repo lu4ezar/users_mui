@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Card, CardContent, Typography } from "@material-ui/core";
+import Skeleton from "@material-ui/lab/Skeleton";
 import { useQuery } from "@apollo/react-hooks";
 import Layout from "../../src/components/layout";
 import { GET_USER } from "../../src/apolloClient";
@@ -19,9 +20,11 @@ export default function User() {
       <Card>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {name}
+            {name || <Skeleton width={200} />}
           </Typography>
-          <Typography color="textSecondary">{email}</Typography>
+          <Typography color="textSecondary">
+            {email || <Skeleton width={350} />}
+          </Typography>
         </CardContent>
       </Card>
     </Layout>
