@@ -12,7 +12,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { useState } from "react";
 import Router from "next/router";
 import Layout from "../../src/components/layout";
-import { CREATE_USER, GET_USERS } from "../../src/apolloClient";
+import { CREATE_USER, GET_USERS } from "../../src/apolloClient/queries";
 
 const useStyles = makeStyles((theme) => ({
   root: {

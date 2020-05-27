@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import Layout from "../../src/components/layout";
-import client, { GET_USER } from "../../src/apolloClient";
+import client from "../../src/apolloClient";
+import { GET_USER } from "../../src/apolloClient/queries";
 
 const User = ({ name, email }) => (
   <Layout>

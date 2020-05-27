@@ -1,5 +1,9 @@
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { GET_USERS, UPDATE_USER, DELETE_USER } from "../../apolloClient";
+import {
+  GET_USERS,
+  UPDATE_USER,
+  DELETE_USER,
+} from "../../apolloClient/queries";
 
 export const useFetch = () => {
   const { loading, error, data, fetchMore: fetchMoreUseQuery } = useQuery(
