@@ -59,13 +59,7 @@ export const ENDPOINT =
     ? "http://localhost:3000/api/graphql"
     : `https://${process.env.VERCEL_URL}/api/graphql`;
 
-const cache =
-  typeof window === "undefined"
-    ? new InMemoryCache()
-    : new InMemoryCache().restore(window.__APOLLO_STATE__);
-
 const client = new ApolloClient({
-  ssrMode: true,
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
@@ -81,7 +75,7 @@ const client = new ApolloClient({
       credentials: "same-origin",
     }),
   ]),
-  cache,
+  cache: new InMemoryCache(),
 });
 
 export default client;
