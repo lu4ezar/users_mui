@@ -7,7 +7,10 @@ import {
 
 export const useFetch = () => {
   const { loading, error, data, fetchMore: fetchMoreUseQuery } = useQuery(
-    GET_USERS
+    GET_USERS,
+    {
+      notifyOnNetworkStatusChange: true,
+    }
   );
   const updateQuery = (prev, { fetchMoreResult }) => {
     if (!fetchMoreResult.usersQuery.users.length) {
