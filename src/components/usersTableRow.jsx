@@ -7,6 +7,7 @@ import {
   Tooltip,
   makeStyles,
 } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import { Edit as EditIcon, Close as CloseIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles({
@@ -15,17 +16,14 @@ const useStyles = makeStyles({
   },
 });
 
-const UsersTableRow = ({
-  user: { _id: id, name, email },
-  setEditId,
-  handleDelete,
-}) => {
+const UsersTableRow = ({ user, setEditId, handleDelete }) => {
   const classes = useStyles();
+  const { _id: id, name, email } = user;
   return (
     <Link href="/user/[id]" as={`/user/${id}`}>
       <TableRow className={classes.row} hover>
-        <TableCell scope="row">{name}</TableCell>
-        <TableCell align="right">{email}</TableCell>
+        <TableCell scope="row">{name || <Skeleton width={200} />}</TableCell>
+        <TableCell align="right">{email || <Skeleton width={350} />}</TableCell>
         <TableCell align="right">
           <Tooltip title="edit user">
             <IconButton aria-label="edit" onClick={setEditId}>
