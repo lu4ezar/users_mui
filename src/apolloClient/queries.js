@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import PAGE_SIZE from "./PAGE_SIZE";
 
 export const GET_USER = gql`
   query User($id: ID!) {
@@ -9,7 +10,7 @@ export const GET_USER = gql`
   }
 `;
 export const GET_USERS = gql`
-  query Users($skip: Int = 0, $limit: Int = 5) {
+  query Users($skip: Int = 0, $limit: Int = ${PAGE_SIZE}) {
     usersQuery(skip: $skip, limit: $limit) {
       users {
         _id
