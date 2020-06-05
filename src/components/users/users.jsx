@@ -24,7 +24,7 @@ import PAGE_SIZE from "../../apolloClient/PAGE_SIZE";
 const createDummyUsersList = () =>
   new Array(PAGE_SIZE)
     .fill({ name: "", email: "" })
-    .map((user) => ({ ...user, _id: Math.random() }));
+    .map((user) => ({ ...user, _id: Math.random().toString() }));
 
 const Users = () => {
   const classes = useStyles();
