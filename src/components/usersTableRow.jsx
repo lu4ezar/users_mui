@@ -14,6 +14,15 @@ const useStyles = makeStyles({
   row: {
     cursor: "pointer",
   },
+  nameCell: {
+    width: "40%",
+  },
+  emailCell: {
+    width: "40%",
+  },
+  buttonsCell: {
+    width: "20%",
+  },
 });
 
 const UsersTableRow = ({ user, setEditId, handleDelete }) => {
@@ -22,9 +31,13 @@ const UsersTableRow = ({ user, setEditId, handleDelete }) => {
   return (
     <Link href="/user/[id]" as={`/user/${id}`}>
       <TableRow className={classes.row} hover>
-        <TableCell scope="row">{name || <Skeleton width={200} />}</TableCell>
-        <TableCell align="right">{email || <Skeleton width={350} />}</TableCell>
-        <TableCell align="right">
+        <TableCell scope="row" className={classes.nameCell}>
+          {name || <Skeleton width={150} />}
+        </TableCell>
+        <TableCell align="right" className={classes.emailCell}>
+          {email || <Skeleton width={300} />}
+        </TableCell>
+        <TableCell align="right" className={classes.buttonsCell}>
           <Tooltip title="edit user">
             <IconButton aria-label="edit" onClick={setEditId}>
               <EditIcon />
