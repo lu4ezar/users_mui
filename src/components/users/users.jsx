@@ -12,8 +12,10 @@ import {
   Typography,
   Button,
   LinearProgress,
+  Snackbar,
 } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
+import { Alert } from "@material-ui/lab";
 import UsersTableRow from "../usersTableRow";
 import UsersTableRowEdit from "../usersTableRowEdit";
 import useStyles from "./useStyles";
@@ -34,17 +36,25 @@ const Users = () => {
     setHasMounted(true);
   }, []);
 
-  const deleteUser = useDeleteMutation();
-  const updateUser = useUpdateMutation();
+  const { deleteUser, error: deleteError } = useDeleteMutation();
+  const { updateUser, error: updateError } = useUpdateMutation();
   const {
     fetchMore,
     data: {
-      usersQuery: { users = createDummyUsersList(), hasNext = true } = {},
+      usersQuery: { users = createDummyUsersList(), hasNext = false } = {},
     } = {},
     loading,
     error,
   } = useFetch();
   const [editId, setEditId] = useState(null);
+
+  const [errorMessage, setErrorMessage] = useState(null);
+  useEffect(() => {
+    if (error || deleteError || updateError) {
+      const { message } = error || deleteError || updateError;
+      setErrorMessage(message);
+    }
+  }, [error, updateError, deleteError]);
 
   const handleDelete = (e, id) => {
     e.stopPropagation();
@@ -60,6 +70,15 @@ const Users = () => {
     setEditId(id);
   };
 
+  const handleCloseErrorMessage = () => {
+    setErrorMessage(null);
+  };
+
+  const handleMoreClick = () =>
+    fetchMore().catch((err) => {
+      setErrorMessage(err.message);
+    });
+
   if (!hasMounted) {
     return null;
   }
@@ -69,11 +88,16 @@ const Users = () => {
       <Typography color="textPrimary" variant="h3" gutterBottom>
         Users
       </Typography>
-      {error && (
-        <Typography color="error">
-          Error:
-          {error.message}
-        </Typography>
+      {errorMessage && (
+        <Snackbar
+          open={!!errorMessage}
+          autoHideDuration={5000}
+          onClose={handleCloseErrorMessage}
+        >
+          <Alert onClose={handleCloseErrorMessage} severity="error">
+            {errorMessage}
+          </Alert>
+        </Snackbar>
       )}
       <TableContainer component="form">
         <Table
@@ -114,7 +138,11 @@ const Users = () => {
       </TableContainer>
       {loading && <LinearProgress />}
       <div className={classes.btn__container}>
-        <Button variant="contained" disabled={!hasNext} onClick={fetchMore}>
+        <Button
+          variant="contained"
+          disabled={!hasNext}
+          onClick={handleMoreClick}
+        >
           More
         </Button>
         <Link href="user/addUser">

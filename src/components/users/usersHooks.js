@@ -10,6 +10,8 @@ export const useFetch = () => {
     GET_USERS,
     {
       notifyOnNetworkStatusChange: true,
+      errorPolicy: "all",
+      onError: (err) => err,
     }
   );
   const updateQuery = (prev, { fetchMoreResult }) => {
@@ -25,7 +27,7 @@ export const useFetch = () => {
     };
   };
   const fetchMore = () => {
-    fetchMoreUseQuery({
+    return fetchMoreUseQuery({
       variables: {
         skip: data.usersQuery.users.length,
       },
@@ -37,12 +39,14 @@ export const useFetch = () => {
 };
 
 export const useUpdateMutation = () => {
-  const [updateUser] = useMutation(UPDATE_USER);
-  return updateUser;
+  const [updateUser, { error }] = useMutation(UPDATE_USER, {
+    onError: () => {},
+  });
+  return { updateUser, error };
 };
 
 export const useDeleteMutation = (id) => {
-  const [deleteUser] = useMutation(DELETE_USER, {
+  const [deleteUser, { error }] = useMutation(DELETE_USER, {
     variables: {
       id,
     },
@@ -63,5 +67,5 @@ export const useDeleteMutation = (id) => {
       });
     },
   });
-  return deleteUser;
+  return { deleteUser, error };
 };
