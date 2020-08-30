@@ -23,14 +23,18 @@ const useStyles = makeStyles({
   buttonsCell: {
     width: "20%",
   },
+  disabledRow: {
+    pointerEvents: "none",
+  },
 });
 
-const UsersTableRow = ({ user, setEditId, handleDelete }) => {
+const UsersTableRow = ({ user, isLoading, setEditId, handleDelete }) => {
   const classes = useStyles();
   const { _id: id, name, email } = user;
+  const tableRowClass = `${classes.row}${isLoading ? " disabledRow" : ""}`;
   return (
     <Link href="/user/[id]" as={`/user/${id}`}>
-      <TableRow className={classes.row} hover>
+      <TableRow className={tableRowClass} hover>
         <TableCell scope="row" className={classes.nameCell}>
           {name || <Skeleton width={150} />}
         </TableCell>
@@ -60,6 +64,7 @@ UsersTableRow.propTypes = {
     name: PropTypes.string,
     email: PropTypes.string,
   }).isRequired,
+  isLoading: PropTypes.bool.isRequired,
   setEditId: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
 };
