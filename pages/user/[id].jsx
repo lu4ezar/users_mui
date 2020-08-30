@@ -8,10 +8,12 @@ import { GET_USER } from "../../src/apolloClient/queries";
 export default function User() {
   const router = useRouter();
   const { id } = router.query;
-  const { name, email, loading } =
-    useQuery(GET_USER, {
+  const { data: { user: { name, email } = {} } = {}, loading } = useQuery(
+    GET_USER,
+    {
       variables: { id },
-    }).data?.user || {};
+    }
+  );
   return (
     <Layout>
       <Typography color="textPrimary" variant="h3" gutterBottom>
