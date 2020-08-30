@@ -34,23 +34,3 @@ App.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 };
-
-// App.getServerSideProps = async (appContext) => {
-//   // const appProps = await App.getInitialProps(appContext);
-//   // console.log(appProps);
-//   const initialState = await client.query({ query: GET_USERS });
-//   // console.log(initialState);
-//   const cache = client.cache.extract();
-//   console.log(cache);
-
-//   return { apolloCache: cache };
-// };
-
-// export async function getServerSideProps(ctx) {
-//   await client.query({ query: GET_USERS });
-//   return {
-//     props: {
-//       apolloCache: client.cache.extract(),
-//     },
-//   };
-// }
