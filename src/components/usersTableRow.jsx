@@ -11,9 +11,10 @@ import { Skeleton } from "@material-ui/lab";
 import { Edit as EditIcon, Close as CloseIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles({
-  row: {
+  row: ({ isLoading }) => ({
     cursor: "pointer",
-  },
+    pointerEvents: isLoading ? "none" : "auto",
+  }),
   nameCell: {
     width: "40%",
   },
@@ -23,18 +24,14 @@ const useStyles = makeStyles({
   buttonsCell: {
     width: "20%",
   },
-  disabledRow: {
-    pointerEvents: "none",
-  },
 });
 
 const UsersTableRow = ({ user, isLoading, setEditId, handleDelete }) => {
-  const classes = useStyles();
+  const classes = useStyles(isLoading);
   const { _id: id, name, email } = user;
-  const tableRowClass = `${classes.row}${isLoading ? " disabledRow" : ""}`;
   return (
     <Link href="/user/[id]" as={`/user/${id}`}>
-      <TableRow className={tableRowClass} hover>
+      <TableRow className={classes.row} hover>
         <TableCell scope="row" className={classes.nameCell}>
           {isLoading ? <Skeleton width={150} /> : name}
         </TableCell>
