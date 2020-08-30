@@ -8,7 +8,7 @@ import { GET_USER } from "../../src/apolloClient/queries";
 export default function User() {
   const router = useRouter();
   const { id } = router.query;
-  const { name, email } =
+  const { name, email, loading } =
     useQuery(GET_USER, {
       variables: { id },
     }).data?.user || {};
@@ -20,10 +20,10 @@ export default function User() {
       <Card>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {name || <Skeleton width={200} />}
+            {loading ? <Skeleton width={200} /> : name}
           </Typography>
           <Typography color="textSecondary">
-            {email || <Skeleton width={350} />}
+            {loading ? <Skeleton width={350} /> : email}
           </Typography>
         </CardContent>
       </Card>

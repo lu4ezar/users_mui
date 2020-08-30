@@ -36,10 +36,10 @@ const UsersTableRow = ({ user, isLoading, setEditId, handleDelete }) => {
     <Link href="/user/[id]" as={`/user/${id}`}>
       <TableRow className={tableRowClass} hover>
         <TableCell scope="row" className={classes.nameCell}>
-          {name || <Skeleton width={150} />}
+          {isLoading ? <Skeleton width={150} /> : name}
         </TableCell>
         <TableCell align="right" className={classes.emailCell}>
-          {email || <Skeleton width={300} />}
+          {isLoading ? <Skeleton width={300} /> : email}
         </TableCell>
         <TableCell align="right" className={classes.buttonsCell}>
           <Tooltip title="edit user">

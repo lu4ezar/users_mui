@@ -128,6 +128,7 @@ const Users = () => {
                 <UsersTableRow
                   key={userId}
                   user={user}
+                  isLoading={loading}
                   setEditId={(e) => handleSetEdit(e, userId)}
                   handleDelete={(e) => handleDelete(e, userId)}
                 />
