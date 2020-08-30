@@ -115,8 +115,11 @@ const Users = () => {
           </TableHead>
           <TableBody>
             {users.map((user) => {
-              const { _id: userId } = user;
+              const { _id: userId, name, email } = user;
               const isEditing = userId === editId;
+              if (!loading && !name && !email) {
+                return null;
+              }
               return isEditing ? (
                 <UsersTableRowEdit
                   key={userId}
