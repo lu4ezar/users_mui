@@ -25,7 +25,7 @@
     "micro-cors": "0.1.1",
     "next": "10.0.7",
     "mongoose": "5.11.18",
-    "mongodb": "3.6.4",
+    "mongodb": "3.6.5",
     "prop-types": "15.7.2",
     "react": "17.0.1",
     "react-apollo": "3.1.5",
