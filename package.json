@@ -23,7 +23,7 @@
     "graphql-tools": "7.0.5",
     "micro": "9.3.4",
     "micro-cors": "0.1.1",
-    "next": "10.2.1",
+    "next": "10.2.3",
     "mongoose": "5.12.12",
     "mongodb": "3.6.9",
     "prop-types": "15.7.2",
