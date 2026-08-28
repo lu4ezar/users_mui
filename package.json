@@ -18,7 +18,7 @@
     "apollo-boost": "0.4.9",
     "apollo-datasource": "3.3.2",
     "apollo-server-micro": "3.12.0",
-    "graphql": "15.8.0",
+    "graphql": "15.10.3",
     "graphql-tag": "2.12.6",
     "graphql-tools": "8.2.11",
     "micro": "9.3.4",
